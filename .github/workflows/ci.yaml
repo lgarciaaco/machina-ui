@@ -22,7 +22,7 @@ on:
       - '.github/CODEOWNERS'
 
 env:
-  ENVIRONMENT: prod
+  ENVIRONMENT: staging
 
 jobs:
   build-push:
@@ -41,6 +41,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Set up .env file
+        env:
+          ENDPOINT: ${{ secrets.TRADER_ENDPOINT }}
+        run: |
+          echo REACT_APP_TRADER_ENDPOINT=${ENDPOINT} > .env
       - name: Build and publish docker image
         run: |
           make build push
