@@ -1,0 +1,51 @@
+# This runs checks to verify if code is properly formatted and that tests (unit and integration against a mocked environment) are passing.
+name: CI / CD
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '*.md'
+      - '*.sh'
+      - '.github/*.md'
+      - '.github/CODEOWNERS'
+      - 'dockerfiles/**'
+      - 'docs/**'
+
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore:
+      - '*.md'
+      - '*.sh'
+      - '.github/*.md'
+      - '.github/CODEOWNERS'
+
+env:
+  ENVIRONMENT: staging
+
+jobs:
+  build-push:
+    name: "Build and Push"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Set up .env file
+        env:
+          ENDPOINT: ${{ secrets.TRADER_ENDPOINT }}
+        run: |
+          echo REACT_APP_TRADER_ENDPOINT=${ENDPOINT} > .env
+      - name: Build and publish docker image
+        run: |
+          make build push
