@@ -6,7 +6,7 @@ import CustomerList from './pages/CustomerList';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
-import ProductList from './pages/ProductList';
+import StrategyList from './pages/StrategyList';
 import Register from './pages/Register';
 import Settings from './pages/Settings';
 
@@ -18,7 +18,7 @@ const routes = [
       { path: 'account', element: <Account /> },
       { path: 'customers', element: <CustomerList /> },
       { path: 'dashboard', element: <Dashboard /> },
-      { path: 'products', element: <ProductList /> },
+      { path: 'strategies', element: <StrategyList /> },
       { path: 'settings', element: <Settings /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]

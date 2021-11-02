@@ -19,6 +19,12 @@ export function getOrders() {
     .catch(() => Promise.reject(new Error('Request Not Authenticated!')));
 }
 
+export function getUsers() {
+  return axios.get(`${BASE_URL}/v1/users/1/10`, { headers: { Authorization: `Bearer ${localStorage.getItem('x-access-token')}` } })
+    .then((response) => response.data)
+    .catch(() => Promise.reject(new Error('Request Not Authenticated!')));
+}
+
 export function login(data) {
   return axios.get(`${BASE_URL}/v1/users/token`, { auth: { username: data.username, password: data.password } })
     .then((response) => {

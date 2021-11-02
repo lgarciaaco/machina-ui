@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import {
   Avatar,
   Box,
@@ -9,9 +10,15 @@ import {
   Typography
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import GetAppIcon from '@material-ui/icons/Money';
 
-const ProductCard = ({ product, ...rest }) => (
+const truncate = (str, n) => (
+  <span>
+    {str.length > n ? `${str.substring(0, n)}...` : str}
+  </span>
+);
+
+const StrategyCard = ({ strategy, ...rest }) => (
   <Card
     sx={{
       display: 'flex',
@@ -30,7 +37,7 @@ const ProductCard = ({ product, ...rest }) => (
       >
         <Avatar
           alt="Product"
-          src={product.media}
+          src="/static/images/products/binance.png"
           variant="square"
         />
       </Box>
@@ -40,14 +47,14 @@ const ProductCard = ({ product, ...rest }) => (
         gutterBottom
         variant="h4"
       >
-        {product.title}
+        {strategy.name}
       </Typography>
       <Typography
         align="center"
         color="textPrimary"
         variant="body1"
       >
-        {product.description}
+        {truncate(strategy.description, 120)}
       </Typography>
     </CardContent>
     <Box sx={{ flexGrow: 1 }} />
@@ -72,7 +79,7 @@ const ProductCard = ({ product, ...rest }) => (
             sx={{ pl: 1 }}
             variant="body2"
           >
-            Updated 2hr ago
+            {`Running since ${moment(strategy.date_created).fromNow()}`}
           </Typography>
         </Grid>
         <Grid
@@ -89,9 +96,9 @@ const ProductCard = ({ product, ...rest }) => (
             sx={{ pl: 1 }}
             variant="body2"
           >
-            {product.totalDownloads}
+            {strategy.positions_total}
             {' '}
-            Downloads
+            Positions
           </Typography>
         </Grid>
       </Grid>
@@ -99,8 +106,8 @@ const ProductCard = ({ product, ...rest }) => (
   </Card>
 );
 
-ProductCard.propTypes = {
-  product: PropTypes.object.isRequired
+StrategyCard.propTypes = {
+  strategy: PropTypes.object.isRequired
 };
 
-export default ProductCard;
+export default StrategyCard;
